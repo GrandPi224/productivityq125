@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLS Productivity and Costs Report Quiz (May 8, 2025)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        header {
+            background-color: #1e40af;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 20px;
+        }
+        .quiz-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #1e40af;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 10px;
+        }
+        .question {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        @media (max-width: 600px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+        .option {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .option:hover {
+            background-color: #f0f4f8;
+        }
+        .selected-correct {
+            background-color: #22c55e;
+            color: white;
+            border-color: #16a34a;
+        }
+        .selected-incorrect {
+            background-color: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+        .correct {
+            background-color: #dcfce7;
+            border-color: #22c55e;
+        }
+        .feedback {
+            display: none;
+            background-color: #dbeafe;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .feedback-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .feedback-correct {
+            color: #16a34a;
+        }
+        .feedback-incorrect {
+            color: #dc2626;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #dbeafe;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .score {
+            font-weight: bold;
+            font-size: 18px;
+            color: #1e40af;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-reset {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+        .btn-score {
+            background-color: #1e40af;
+            color: white;
+        }
+        .btn-reset:hover {
+            background-color: #d1d5db;
+        }
+        .btn-score:hover {
+            background-color: #1e3a8a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BLS Productivity and Costs Report Quiz (May 8, 2025)</h1>
+        <p>Test your knowledge of the key metrics from the latest productivity report</p>
+    </header>
+    
+    <div id="quiz-container"></div>
+    
+    <div class="controls">
+        <div id="score-display" class="score"></div>
+        <div>
+            <button id="reset-button" class="btn-reset">Reset Quiz</button>
+            <button id="score-button" class="btn-score">Calculate Score</button>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data
+        const quizData = {
+            sections: [
+                {
+                    title: "Key Metrics - First Quarter 2025",
+                    questions: [
+                        {
+                            id: 1,
+                            text: "Nonfarm business sector labor productivity decreased by what percentage in Q1 2025?",
+                            options: [
+                                { id: "A", text: "-0.3%" },
+                                { id: "B", text: "-0.8%" },
+                                { id: "C", text: "0.6%" },
+                                { id: "D", text: "1.4%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the BLS report, nonfarm business sector labor productivity decreased 0.8 percent in the first quarter of 2025, as output decreased 0.3 percent and hours worked increased 0.6 percent."
+                        },
+                        {
+                            id: 2,
+                            text: "How much did output decrease in the nonfarm business sector in Q1 2025?",
+                            options: [
+                                { id: "A", text: "-0.3%" },
+                                { id: "B", text: "-0.8%" },
+                                { id: "C", text: "0.6%" },
+                                { id: "D", text: "5.7%" }
+                            ],
+                            correctAnswer: "A",
+                            explanation: "The BLS report states that output decreased 0.3 percent in the nonfarm business sector during Q1 2025."
+                        },
+                        {
+                            id: 3,
+                            text: "What was the percentage increase in unit labor costs in the nonfarm business sector in Q1 2025?",
+                            options: [
+                                { id: "A", text: "1.3%" },
+                                { id: "B", text: "4.8%" },
+                                { id: "C", text: "5.7%" },
+                                { id: "D", text: "1.0%" }
+                            ],
+                            correctAnswer: "C",
+                            explanation: "According to the report, unit labor costs in the nonfarm business sector increased 5.7 percent in the first quarter of 2025, reflecting a 4.8-percent increase in hourly compensation and a 0.8-percent decrease in productivity."
+                        },
+                        {
+                            id: 4,
+                            text: "By how much did real hourly compensation increase in the nonfarm business sector in Q1 2025?",
+                            options: [
+                                { id: "A", text: "0.0%" },
+                                { id: "B", text: "1.0%" },
+                                { id: "C", text: "2.7%" },
+                                { id: "D", text: "4.8%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report indicates that real hourly compensation, which takes into account consumer prices, increased 1.0 percent in the first quarter of 2025."
+                        },
+                        {
+                            id: 5,
+                            text: "What was the annualized rate of productivity growth during the current business cycle (starting Q4 2019)?",
+                            options: [
+                                { id: "A", text: "0.6%" },
+                                { id: "B", text: "1.5%" },
+                                { id: "C", text: "1.8%" },
+                                { id: "D", text: "2.1%" }
+                            ],
+                            correctAnswer: "C",
+                            explanation: "According to the report, during the current business cycle, starting in the fourth quarter of 2019, labor productivity has grown at an annualized rate of 1.8 percent, reflecting a 2.4-percent rate of growth in output and a 0.6-percent rate of growth in hours worked."
+                        }
+                    ]
+                },
+                {
+                    title: "Manufacturing Sector - First Quarter 2025",
+                    questions: [
+                        {
+                            id: 6,
+                            text: "Manufacturing sector labor productivity increased by what percentage in Q1 2025?",
+                            options: [
+                                { id: "A", text: "2.2%" },
+                                { id: "B", text: "4.5%" },
+                                { id: "C", text: "5.1%" },
+                                { id: "D", text: "7.1%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the BLS report, manufacturing sector labor productivity increased 4.5 percent in the first quarter of 2025, as output increased 5.1 percent and hours worked increased 0.5 percent."
+                        },
+                        {
+                            id: 7,
+                            text: "How much did durable manufacturing sector productivity increase in Q1 2025?",
+                            options: [
+                                { id: "A", text: "0.5%" },
+                                { id: "B", text: "2.2%" },
+                                { id: "C", text: "4.5%" },
+                                { id: "D", text: "7.1%" }
+                            ],
+                            correctAnswer: "D",
+                            explanation: "The report states that in the durable manufacturing sector, productivity increased 7.1 percent, reflecting a 7.9-percent increase in output and a 0.8-percent increase in hours worked."
+                        },
+                        {
+                            id: 8,
+                            text: "What was the percentage increase in unit labor costs in the total manufacturing sector in Q1 2025?",
+                            options: [
+                                { id: "A", text: "0.7%" },
+                                { id: "B", text: "1.6%" },
+                                { id: "C", text: "4.5%" },
+                                { id: "D", text: "6.2%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report indicates that unit labor costs in the total manufacturing sector increased 1.6 percent in the first quarter of 2025, reflecting a 6.2-percent increase in hourly compensation and a 4.5-percent increase in productivity."
+                        },
+                        {
+                            id: 9,
+                            text: "By how much did nondurable manufacturing sector productivity increase in Q1 2025?",
+                            options: [
+                                { id: "A", text: "0.1%" },
+                                { id: "B", text: "2.2%" },
+                                { id: "C", text: "4.5%" },
+                                { id: "D", text: "7.1%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the report, nondurable manufacturing sector productivity increased 2.2 percent, as output increased 2.3 percent and hours worked increased 0.1 percent."
+                        }
+                    ]
+                },
+                {
+                    title: "Year-over-Year Changes",
+                    questions: [
+                        {
+                            id: 10,
+                            text: "From the same quarter a year ago, nonfarm business sector labor productivity increased by what percentage in Q1 2025?",
+                            options: [
+                                { id: "A", text: "0.8%" },
+                                { id: "B", text: "1.4%" },
+                                { id: "C", text: "2.7%" },
+                                { id: "D", text: "5.7%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report states that from the same quarter a year ago, nonfarm business sector labor productivity increased 1.4 percent in the first quarter of 2025."
+                        },
+                        {
+                            id: 11,
+                            text: "Total manufacturing sector productivity increased by what percentage from the same quarter a year ago?",
+                            options: [
+                                { id: "A", text: "0.7%" },
+                                { id: "B", text: "1.5%" },
+                                { id: "C", text: "2.2%" },
+                                { id: "D", text: "4.5%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the report, total manufacturing sector productivity increased 1.5 percent from the same quarter a year ago."
+                        },
+                        {
+                            id: 12,
+                            text: "By how much did unit labor costs increase in the nonfarm business sector over the last four quarters?",
+                            options: [
+                                { id: "A", text: "0.0%" },
+                                { id: "B", text: "1.3%" },
+                                { id: "C", text: "2.7%" },
+                                { id: "D", text: "5.7%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report states that unit labor costs increased 1.3 percent over the last four quarters in the nonfarm business sector."
+                        },
+                        {
+                            id: 13,
+                            text: "Manufacturing unit labor costs increased by what percentage from the same quarter a year ago?",
+                            options: [
+                                { id: "A", text: "0.7%" },
+                                { id: "B", text: "1.5%" },
+                                { id: "C", text: "2.2%" },
+                                { id: "D", text: "6.2%" }
+                            ],
+                            correctAnswer: "A",
+                            explanation: "According to the report, manufacturing unit labor costs increased 0.7 percent from the same quarter a year ago."
+                        }
+                    ]
+                },
+                {
+                    title: "Revised Measures & Historical Comparison",
+                    questions: [
+                        {
+                            id: 14,
+                            text: "How does the current business cycle productivity growth rate (1.8%) compare to the previous business cycle (Q4 2007 through Q4 2019)?",
+                            options: [
+                                { id: "A", text: "It is lower than the previous rate of 2.1%" },
+                                { id: "B", text: "It is higher than the previous rate of 1.5%" },
+                                { id: "C", text: "It is equal to the previous rate of 1.8%" },
+                                { id: "D", text: "Both a and b are correct" }
+                            ],
+                            correctAnswer: "D",
+                            explanation: "The report states that the 1.8-percent annualized rate of productivity growth in the current business cycle thus far is higher than the 1.5-percent rate of the previous business cycle from the fourth quarter of 2007 through the fourth quarter of 2019, and is below the long-term rate of 2.1 percent since the first quarter of 1947."
+                        },
+                        {
+                            id: 15,
+                            text: "Manufacturing sector labor productivity has grown at what annualized rate during the current business cycle?",
+                            options: [
+                                { id: "A", text: "0.1%" },
+                                { id: "B", text: "0.5%" },
+                                { id: "C", text: "1.5%" },
+                                { id: "D", text: "2.1%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the report, manufacturing sector labor productivity has grown at an annualized rate of 0.5 percent during the current business cycle, as output has increased 0.2 percent and hours have declined 0.3 percent."
+                        },
+                        {
+                            id: 16,
+                            text: "In the fourth quarter of 2024, nonfinancial corporate sector productivity increased by what percentage?",
+                            options: [
+                                { id: "A", text: "3.7%" },
+                                { id: "B", text: "4.9%" },
+                                { id: "C", text: "5.4%" },
+                                { id: "D", text: "0.4%" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report states that productivity increased 4.9 percent in the fourth quarter of 2024 for the nonfinancial corporate sector, as output increased 5.4 percent and hours worked increased 0.4 percent."
+                        },
+                        {
+                            id: 17,
+                            text: "This is the first decline in nonfarm business sector labor productivity since ____________.",
+                            options: [
+                                { id: "A", text: "the first quarter of 2022" },
+                                { id: "B", text: "the second quarter of 2022" },
+                                { id: "C", text: "the third quarter of 2022" },
+                                { id: "D", text: "the fourth quarter of 2022" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "According to the report, this is the first decline in nonfarm business sector labor productivity since the second quarter of 2022."
+                        },
+                        {
+                            id: 18,
+                            text: "The BLS calculates unit labor costs as the ratio of ____________ to ____________.",
+                            options: [
+                                { id: "A", text: "hourly compensation, labor productivity" },
+                                { id: "B", text: "labor productivity, hourly compensation" },
+                                { id: "C", text: "output, hours worked" },
+                                { id: "D", text: "hours worked, output" }
+                            ],
+                            correctAnswer: "A",
+                            explanation: "The report states that BLS calculates unit labor costs as the ratio of hourly compensation to labor productivity. Increases in hourly compensation tend to increase unit labor costs and increases in productivity tend to reduce them."
+                        }
+                    ]
+                },
+                {
+                    title: "Technical Details & Methodology",
+                    questions: [
+                        {
+                            id: 19,
+                            text: "Manufacturing sector labor productivity in the current business cycle is below the long-term rate since the first quarter of 1987.",
+                            options: [
+                                { id: "A", text: "True" },
+                                { id: "B", text: "False" }
+                            ],
+                            correctAnswer: "A",
+                            explanation: "According to the report, the 0.5-percent annualized rate of productivity growth in the current business cycle thus far is above the 0.1-percent rate of the previous business cycle from the fourth quarter of 2007 through the fourth quarter of 2019 and is below the long-term rate of 2.1 percent since the first quarter of 1987."
+                        },
+                        {
+                            id: 20,
+                            text: "The manufacturing sector and the nonfarm business sector output measures are directly comparable.",
+                            options: [
+                                { id: "A", text: "True" },
+                                { id: "B", text: "False" }
+                            ],
+                            correctAnswer: "B",
+                            explanation: "The report explicitly states that the concepts, sources, and methods used for the manufacturing output series differ from those used in the business and nonfarm business output series; these output measures are not directly comparable."
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Quiz state
+        let userAnswers = {};
+        let showResults = {};
+
+        // Generate quiz HTML
+        function generateQuiz() {
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.innerHTML = '';
+            
+            quizData.sections.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'section';
+                
+                const sectionTitle = document.createElement('h2');
+                sectionTitle.textContent = section.title;
+                sectionElement.appendChild(sectionTitle);
+                
+                section.questions.forEach(question => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question';
+                    
+                    const questionText = document.createElement('p');
+                    questionText.className = 'question-text';
+                    questionText.textContent = `${question.id}. ${question.text}`;
+                    questionElement.appendChild(questionText);
+                    
+                    const optionsContainer = document.createElement('div');
+                    optionsContainer.className = 'options';
+                    
+                    question.options.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option';
+                        optionButton.textContent = `${option.id}) ${option.text}`;
+                        
+                        // Add event listener
+                        optionButton.addEventListener('click', function() {
+                            handleOptionClick(question, option, optionsContainer, questionElement);
+                        });
+                        
+                        optionsContainer.appendChild(optionButton);
+                    });
+                    
+                    questionElement.appendChild(optionsContainer);
+                    
+                    // Add feedback area
+                    const feedback = document.createElement('div');
+                    feedback.className = 'feedback';
+                    
+                    const feedbackHeader = document.createElement('p');
+                    feedbackHeader.className = 'feedback-header';
+                    feedback.appendChild(feedbackHeader);
+                    
+                    const feedbackExplanation = document.createElement('p');
+                    feedbackExplanation.textContent = question.explanation;
+                    feedback.appendChild(feedbackExplanation);
+                    
+                    questionElement.appendChild(feedback);
+                    
+                    sectionElement.appendChild(questionElement);
+                });
+                
+                quizContainer.appendChild(sectionElement);
+            });
+        }
+
+        // Handle option click
+        function handleOptionClick(question, selectedOption, optionsContainer, questionElement) {
+            // Store answer
+            userAnswers[question.id] = selectedOption.id;
+            showResults[question.id] = true;
+            
+            // Update options styling
+            const options = optionsContainer.querySelectorAll('.option');
+            options.forEach(optionButton => {
+                // Get option ID from button text
+                const optionId = optionButton.textContent.charAt(0);
+                
+                // Disable all options
+                optionButton.disabled = true;
+                
+                if (optionId === selectedOption.id && optionId === question.correctAnswer) {
+                    // Selected correct answer
+                    optionButton.className = 'option selected-correct';
+                } else if (optionId === selectedOption.id) {
+                    // Selected incorrect answer
+                    optionButton.className = 'option selected-incorrect';
+                } else if (optionId === question.correctAnswer) {
+                    // Correct answer not selected
+                    optionButton.className = 'option correct';
+                }
+            });
+            
+            // Show feedback
+            const feedback = questionElement.querySelector('.feedback');
+            feedback.style.display = 'block';
+            
+            const feedbackHeader = feedback.querySelector('.feedback-header');
+            if (selectedOption.id === question.correctAnswer) {
+                feedbackHeader.textContent = '✓ Correct!';
+                feedbackHeader.className = 'feedback-header feedback-correct';
+            } else {
+                feedbackHeader.textContent = `✗ Incorrect. The correct answer is ${question.correctAnswer}.`;
+                feedbackHeader.className = 'feedback-header feedback-incorrect';
+            }
+        }
+
+        // Calculate and display score
+        function calculateScore() {
+            let correctCount = 0;
+            let totalQuestions = 0;
+            
+            quizData.sections.forEach(section => {
+                section.questions.forEach(question => {
+                    totalQuestions++;
+                    if (userAnswers[question.id] === question.correctAnswer) {
+                        correctCount++;
+                    }
+                });
+            });
+            
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            document.getElementById('score-display').textContent = `Your Score: ${correctCount} / ${totalQuestions} (${percentage}%)`;
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            // Reset state
+            userAnswers = {};
+            showResults = {};
+            
+            // Regenerate quiz
+            generateQuiz();
+            
+            // Clear score
+            document.getElementById('score-display').textContent = '';
+        }
+
+        // Initialize quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQuiz();
+            
+            // Set up event listeners for buttons
+            document.getElementById('reset-button').addEventListener('click', resetQuiz);
+            document.getElementById('score-button').addEventListener('click', calculateScore);
+        });
+    </script>
+</body>
+</html>
